@@ -1,5 +1,7 @@
 package layout;
 
+// This is a change test for GitHub collaboration purposes
+
 import drawingTool.Function;
 
 import java.awt.Rectangle;
