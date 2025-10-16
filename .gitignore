@@ -361,3 +361,87 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# =========================
+# Eclipse / STS (Spring Tool Suite)
+# =========================
+.metadata/
+.settings/
+.classpath
+.project
+.factorypath
+.recommenders/
+.externalToolBuilders/
+.apt_generated/
+.apt_generated_test/
+.springBeans
+.sts4-cache/
+.mtj.tmp/
+*.launch
+
+# =========================
+# Java build artifacts
+# =========================
+bin/
+out/
+target/
+build/
+dist/
+tmp/
+*.class
+
+# If you vendor third-party jars in a lib/ folder, keep them:
+# (remove these two lines if you don't vendor jars)
+*.jar
+!lib/**/*.jar
+
+# Optional: also drop packaged archives you don't want in VCS
+*.war
+*.ear
+
+# =========================
+# Maven
+# =========================
+.mvn/timing.properties
+# Keep the Maven Wrapper (recommended)
+!mvnw
+!mvnw.cmd
+!.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
+
+# =========================
+# Gradle
+# =========================
+.gradle/
+**/build/
+# Keep the Gradle Wrapper (recommended)
+!gradlew
+!gradlew.bat
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# =========================
+# Generated sources (common locations)
+# =========================
+generated/
+gen/
+target/generated-sources/
+target/generated-test-sources/
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# OS cruft
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Other IDEs (optional, for teammates using different tools)
+# =========================
+.idea/
+*.iml
+.vscode/
