@@ -1,7 +1,5 @@
 package drawingTool;
 
-// This is a change test for GitHub collaboration purposes
-
 import gui.DrawingJPanel;
 import gui.DrawingJFrame;
 import java.awt.Color;

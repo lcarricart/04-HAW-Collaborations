@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 public class Drawing {
-	// This is a change test for GitHub collaboration purposes
 
 	private static Graphics pen = null;
 	

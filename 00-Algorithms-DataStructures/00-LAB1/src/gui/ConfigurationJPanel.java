@@ -11,6 +11,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,7 +24,7 @@ public class ConfigurationJPanel extends JPanel implements ChangeListener, Actio
     private String[] options3 = {"Data 1", "Data 2", "Data 3"};
 	
     private JButton resetView = new JButton("Reset View");
-    private JButton importBtn = new JButton("Import Data Set");
+    private JButton importBtn = new JButton("Import File");
     private JButton zoomInBtn = new JButton(" + ");
     private JButton zoomOutBtn = new JButton("  - ");
     private JSlider volumeSlider = new JSlider(0, 100, 10);
@@ -31,6 +32,9 @@ public class ConfigurationJPanel extends JPanel implements ChangeListener, Actio
     private JComboBox<String> comboBox = new JComboBox<>(options);
     private JComboBox<String> comboBox2 = new JComboBox<>(options2);
     private JComboBox<String> comboBox3 = new JComboBox<>(options3);
+    private JCheckBox showZerosCheckBox = new JCheckBox("Show Zeros");
+    private JCheckBox showExtremasCheckBox = new JCheckBox("Show Extremas");
+    private JCheckBox showHistogramCheckBox = new JCheckBox("Histogram Mode");
 	
 	private final Font TITLE_FONT = new Font("Lucida Bright	", Font.BOLD, 18);
 	private final Font BUTTON_FONT = new Font("Lucida Bright", Font.PLAIN, 14);
@@ -44,13 +48,13 @@ public class ConfigurationJPanel extends JPanel implements ChangeListener, Actio
 	}
 	
 	// Can I use the first two for something?
-	public enum EnumGlasses {
+	public enum EnumPlot1 {
 	    SENSOR1, SENSOR2, SENSOR3, SENSOR4;
 	}
-	public enum EnumHat {
+	public enum EnumPlot2 {
 	    ITEM1, ITEM2, ITEM3, ITEM4, ITEM5;
 	}
-	public enum EnumColor {
+	public enum EnumPlot3 {
 		DATA1, DATA2, DATA3;
 	}
 
@@ -64,17 +68,17 @@ public class ConfigurationJPanel extends JPanel implements ChangeListener, Actio
 		title.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(title);
 		add(Box.createVerticalStrut(15));
+		
+		// Import file button
+		importBtn.setFont(BUTTON_FONT);
+		importBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+		add(importBtn);
+		add(Box.createVerticalStrut(20));
 
 		// Refresh Scene button
 		resetView.setFont(BUTTON_FONT);
 		resetView.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(resetView);
-		add(Box.createVerticalStrut(20));
-
-		// Set Ground button
-		importBtn.setFont(BUTTON_FONT);
-		importBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(importBtn);
 		add(Box.createVerticalStrut(20));
 		
 //		// Volume Slider
@@ -91,7 +95,7 @@ public class ConfigurationJPanel extends JPanel implements ChangeListener, Actio
 //	    add(volumeSlider); 
 //	    add(Box.createVerticalStrut(20));
 	    
-	    // Combo Box (Glasses)
+	    // Combo Box (Plot1)
         JLabel comboLabel = new JLabel("Plot 1");
         int desiredHeight = 20; // in pixels!
         
@@ -102,7 +106,7 @@ public class ConfigurationJPanel extends JPanel implements ChangeListener, Actio
 	    add(comboBox);
 	    add(Box.createVerticalStrut(20));
 	    
-	    // Combo Box (Glasses)
+	    // Combo Box (Plot 2)
         JLabel comboLabel2 = new JLabel("Plot 2");
         
         comboBox2.setMaximumSize(new Dimension(Integer.MAX_VALUE, desiredHeight));
@@ -112,7 +116,7 @@ public class ConfigurationJPanel extends JPanel implements ChangeListener, Actio
 	    add(comboBox2);
 	    add(Box.createVerticalStrut(20));
 	    
-	    // Combo Box (Color)
+	    // Combo Box (Plot 3)
         JLabel comboLabel3 = new JLabel("Plot 3");
         
         comboBox3.setMaximumSize(new Dimension(Integer.MAX_VALUE, desiredHeight));
@@ -121,6 +125,27 @@ public class ConfigurationJPanel extends JPanel implements ChangeListener, Actio
 	    add(comboLabel3);
 	    add(comboBox3);
 	    add(Box.createVerticalStrut(30));
+	    
+	    // Analysis features checkboxes
+	    JLabel analysisLabel = new JLabel("Analysis Features");
+	    analysisLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    add(analysisLabel);
+	    add(Box.createVerticalStrut(10));
+	    
+	    showZerosCheckBox.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    showZerosCheckBox.addActionListener(this);
+	    add(showZerosCheckBox);
+	    add(Box.createVerticalStrut(5));
+	    
+	    showExtremasCheckBox.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    showExtremasCheckBox.addActionListener(this);
+	    add(showExtremasCheckBox);
+	    add(Box.createVerticalStrut(5));
+	    
+	    showHistogramCheckBox.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    showHistogramCheckBox.addActionListener(this);
+	    add(showHistogramCheckBox);
+	    add(Box.createVerticalStrut(20));
 	    
 	    // Slider for zoom
 	    JLabel sliderLabel = new JLabel("Zoom Slider");
@@ -196,6 +221,27 @@ public class ConfigurationJPanel extends JPanel implements ChangeListener, Actio
     	return zoomOutBtn;
     }
     
+	public void populateComboBoxes(String[] dataColumns) {
+		comboBox.removeAllItems();
+		comboBox2.removeAllItems();
+		comboBox3.removeAllItems();
+		
+		comboBox.addItem("None");
+		comboBox2.addItem("None");
+		comboBox3.addItem("None");
+		
+		for (String column : dataColumns) {
+			comboBox.addItem(column);
+			comboBox2.addItem(column);
+			comboBox3.addItem(column);
+		}
+		
+		// Add action listeners for combo boxes
+		comboBox.addActionListener(this);
+		comboBox2.addActionListener(this);
+		comboBox3.addActionListener(this);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// I'm unsure of how necessary this is. If it's not, bring the constructor back to no parameters. Also about passing the parent JFrame to DrawingJPanel
@@ -206,6 +252,57 @@ public class ConfigurationJPanel extends JPanel implements ChangeListener, Actio
             scaleSlider.setValue(5);
             
             drawingJPanel.repaint();
+		}
+		else if (e.getSource() == comboBox) {
+			int index = comboBox.getSelectedIndex();
+			if (index == 0) {
+				drawingJPanel.getScene().getFunction().setSelectedColumn1(null);
+			} else if (drawingJPanel.getScene().getSensorData() != null) {
+				String[] columns = drawingJPanel.getScene().getSensorData().getDataColumnNames();
+				if (index - 1 < columns.length) {
+					drawingJPanel.getScene().getFunction().setSelectedColumn1(columns[index - 1]);
+				}
+			}
+			drawingJPanel.getScene().rescaleToSelectedData();
+			drawingJPanel.repaint();
+		}
+		else if (e.getSource() == comboBox2) {
+			int index = comboBox2.getSelectedIndex();
+			if (index == 0) {
+				drawingJPanel.getScene().getFunction().setSelectedColumn2(null);
+			} else if (drawingJPanel.getScene().getSensorData() != null) {
+				String[] columns = drawingJPanel.getScene().getSensorData().getDataColumnNames();
+				if (index - 1 < columns.length) {
+					drawingJPanel.getScene().getFunction().setSelectedColumn2(columns[index - 1]);
+				}
+			}
+			drawingJPanel.getScene().rescaleToSelectedData();
+			drawingJPanel.repaint();
+		}
+		else if (e.getSource() == comboBox3) {
+			int index = comboBox3.getSelectedIndex();
+			if (index == 0) {
+				drawingJPanel.getScene().getFunction().setSelectedColumn3(null);
+			} else if (drawingJPanel.getScene().getSensorData() != null) {
+				String[] columns = drawingJPanel.getScene().getSensorData().getDataColumnNames();
+				if (index - 1 < columns.length) {
+					drawingJPanel.getScene().getFunction().setSelectedColumn3(columns[index - 1]);
+				}
+			}
+			drawingJPanel.getScene().rescaleToSelectedData();
+			drawingJPanel.repaint();
+		}
+		else if (e.getSource() == showZerosCheckBox) {
+			drawingJPanel.getScene().getFunction().setShowZeros(showZerosCheckBox.isSelected());
+			drawingJPanel.repaint();
+		}
+		else if (e.getSource() == showExtremasCheckBox) {
+			drawingJPanel.getScene().getFunction().setShowExtremas(showExtremasCheckBox.isSelected());
+			drawingJPanel.repaint();
+		}
+		else if (e.getSource() == showHistogramCheckBox) {
+			drawingJPanel.getScene().getFunction().setShowHistogram(showHistogramCheckBox.isSelected());
+			drawingJPanel.repaint();
 		}
 	}
 

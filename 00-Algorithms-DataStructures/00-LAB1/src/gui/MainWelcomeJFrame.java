@@ -1,12 +1,13 @@
 /*******************************************************************************************************************
- * Objective of the program: A Swing-based Java application that builds a randomised poodle scene. Each poodle is 
- * composed hierarchically, rendered through recursive drawAt calls, and implements LocatedRectangle to expose a 
- * bounding box. A side panel lets users toggle fur colours, hat/glasses styles, rainfall, and scene volume. GUI 
- * actions propagate to the Scene object, which updates internal state and triggers repaint. Accessories are layered 
- * at run-time via the Decorator pattern, allowing endless combinations without changing core classes. Collision 
- * logic guarantees no two poodles overlap. The final deliverable demonstrates deep inheritance, aggregation vs 
- * composition distinctions, event-driven GUI, random variation utilities, and a fully working design-pattern 
- * implementation.
+ * Objective of the program: A Swing-based Java application for plotting and visualizing sensor data. The application
+ * provides an interactive coordinate system with zooming and panning capabilities. Users can import sensor data files
+ * (txt, csv, json formats) through a file chooser dialog. A side panel provides controls for plot configuration,
+ * zoom level adjustment via slider, and plot selection through combo boxes. The GUI uses event-driven architecture
+ * where actions propagate to the Scene object, which manages viewport transformations and triggers repaint. The
+ * coordinate system supports both mouse-based rectangular zoom selection and slider-based zoom controls. Background
+ * threading via SwingWorker ensures the GUI remains responsive during file I/O operations. The final deliverable
+ * demonstrates aggregation vs composition distinctions, event-driven GUI, coordinate transformations, and proper
+ * separation of concerns between GUI components and data visualization logic.
  *******************************************************************************************************************
  * Author: Luciano Carricart, https://github.com/lcarricart/
  * Status: Information Engineering student at HAW Hamburg, Germany.

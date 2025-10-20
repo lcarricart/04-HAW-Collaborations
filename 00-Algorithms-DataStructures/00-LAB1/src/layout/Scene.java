@@ -1,8 +1,7 @@
 package layout;
 
-// This is a change test for GitHub collaboration purposes
-
 import drawingTool.Function;
+import files.SensorData;
 
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
@@ -18,6 +17,8 @@ public class Scene {
 
     private final Rectangle2D.Double initialViewPoint;
     private Rectangle2D.Double currentViewPoint;
+    
+    private SensorData sensorData;
     
     public Scene(int width, int height) {
         this.width = width;
@@ -80,5 +81,124 @@ public class Scene {
     
     public void resetZoom() {
         this.currentViewPoint = this.initialViewPoint;
-    }   
+    }
+    
+    public void setSensorData(SensorData data) {
+        this.sensorData = data;
+        function.setSensorData(data);
+        autoFitViewport();
+    }
+    
+    public SensorData getSensorData() {
+        return sensorData;
+    }
+    
+    public Function getFunction() {
+        return function;
+    }
+    
+    public void rescaleToSelectedData() {
+        if (sensorData == null || sensorData.isEmpty()) return;
+        
+        // Get currently selected columns from Function
+        String col1 = function.getSelectedColumn1();
+        String col2 = function.getSelectedColumn2();
+        String col3 = function.getSelectedColumn3();
+        
+        // If no columns selected, don't rescale
+        if (col1 == null && col2 == null && col3 == null) return;
+        
+        // Find min/max for timestamps (X-axis)
+        double minX = Double.MAX_VALUE;
+        double maxX = Double.MIN_VALUE;
+        
+        for (Double t : sensorData.getTimestamps()) {
+            if (t < minX) minX = t;
+            if (t > maxX) maxX = t;
+        }
+        
+        // Find min/max only for selected columns (Y-axis)
+        double minY = Double.MAX_VALUE;
+        double maxY = Double.MIN_VALUE;
+        
+        if (col1 != null) {
+            for (Double value : sensorData.getColumnData(col1)) {
+                if (value < minY) minY = value;
+                if (value > maxY) maxY = value;
+            }
+        }
+        if (col2 != null) {
+            for (Double value : sensorData.getColumnData(col2)) {
+                if (value < minY) minY = value;
+                if (value > maxY) maxY = value;
+            }
+        }
+        if (col3 != null) {
+            for (Double value : sensorData.getColumnData(col3)) {
+                if (value < minY) minY = value;
+                if (value > maxY) maxY = value;
+            }
+        }
+        
+        // Add 10% padding around the data
+        double xPadding = (maxX - minX) * 0.1;
+        double yPadding = (maxY - minY) * 0.1;
+        
+        // Handle case where all values are the same
+        if (xPadding == 0) xPadding = 1;
+        if (yPadding == 0) yPadding = 0.1;
+        
+        double newX = minX - xPadding;
+        double newY = minY - yPadding;
+        double newWidth = (maxX - minX) + 2 * xPadding;
+        double newHeight = (maxY - minY) + 2 * yPadding;
+        
+        // Update both initial and current viewport
+        this.initialViewPoint.setRect(newX, newY, newWidth, newHeight);
+        this.currentViewPoint = new Rectangle2D.Double(newX, newY, newWidth, newHeight);
+    }
+    
+    private void autoFitViewport() {
+        if (sensorData == null || sensorData.isEmpty()) return;
+        
+        // Find min/max for timestamps (X-axis)
+        double minX = Double.MAX_VALUE;
+        double maxX = Double.MIN_VALUE;
+        
+        // Find min/max for all data columns (Y-axis)
+        double minY = Double.MAX_VALUE;
+        double maxY = Double.MIN_VALUE;
+        
+        // Check timestamps
+        for (Double t : sensorData.getTimestamps()) {
+            if (t < minX) minX = t;
+            if (t > maxX) maxX = t;
+        }
+        
+        // Check all data columns
+        String[] columns = sensorData.getDataColumnNames();
+        for (String column : columns) {
+            for (Double value : sensorData.getColumnData(column)) {
+                if (value < minY) minY = value;
+                if (value > maxY) maxY = value;
+            }
+        }
+        
+        // Add 10% padding around the data
+        double xPadding = (maxX - minX) * 0.1;
+        double yPadding = (maxY - minY) * 0.1;
+        
+        // Handle case where all values are the same
+        if (xPadding == 0) xPadding = 1;
+        if (yPadding == 0) yPadding = 0.1;
+        
+        double newX = minX - xPadding;
+        double newY = minY - yPadding;
+        double newWidth = (maxX - minX) + 2 * xPadding;
+        double newHeight = (maxY - minY) + 2 * yPadding;
+        
+        // Update both initial and current viewport
+        this.initialViewPoint.setRect(newX, newY, newWidth, newHeight);
+        this.currentViewPoint = new Rectangle2D.Double(newX, newY, newWidth, newHeight);
+    }
 }
