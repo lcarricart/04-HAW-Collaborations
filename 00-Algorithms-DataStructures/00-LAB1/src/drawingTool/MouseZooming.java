@@ -38,7 +38,7 @@ public class MouseZooming extends MouseAdapter {
     @Override
     public void mouseReleased(MouseEvent e) {
         // When mouse is released, tell the scene to zoom
-        if (selectionRectangle != null && selectionRectangle.width > 5) {
+        if (selectionRectangle != null) {
             drawingJPanel.getScene().zoomTo(selectionRectangle);
             drawingJFrame.getConfigurationJPanel().setSliderEnabled(false);
         }

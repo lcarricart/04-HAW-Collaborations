@@ -26,8 +26,7 @@ public class SensorData {
 		temperature = new ArrayList<>();
 	}
 	
-	public void addDataPoint(double timestamp, double accX, double accY, double accZ, 
-	                         double gyroX, double gyroY, double gyroZ, double temperature) {
+	public void addDataPoint(double timestamp, double accX, double accY, double accZ, double gyroX, double gyroY, double gyroZ, double temperature) {
 		this.timestamps.add(timestamp);
 		this.accX.add(accX);
 		this.accY.add(accY);

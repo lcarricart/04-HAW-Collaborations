@@ -6,7 +6,6 @@ import java.awt.geom.Rectangle2D;
 public class Background {
 
     private int height, width;
-    private static final int MARKING_SPACING = 50;
     private static final int TICK_SIZE = 5;
 
     public Background(int width, int height) {

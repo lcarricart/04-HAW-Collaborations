@@ -40,7 +40,7 @@ public class MainBackgroundJPanel extends JPanel {
         // Draw simple grid
         drawSimpleGrid(pen);
         
-        myGeometricShape = new GeometricShape(getWidth(), SENSOR_GRAY, CIRCUIT_GREEN, SIGNAL_ORANGE);
+        myGeometricShape = new GeometricShape(getWidth(), SIGNAL_ORANGE);
         
         for (int i = 0; i < Y_MARGIN; i = i + 500)
         {

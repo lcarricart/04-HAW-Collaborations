@@ -7,11 +7,6 @@ import java.util.List;
 import files.SensorData;
 
 public class Function {
-    
-    // The raw data points for the function
-    private final int[] dataXPoints = {-50, -20, 30, 80, 100};
-    private final int[] dataYPoints = {-50, -10, 20, 15, 60};
-    
     private SensorData sensorData;
     private String selectedColumn1;
     private String selectedColumn2;
